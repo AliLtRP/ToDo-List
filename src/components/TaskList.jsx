@@ -1,3 +1,4 @@
+import { specialCharMap } from '@testing-library/user-event/dist/keyboard';
 import React, { useState } from 'react';
 
 function TaskList() {
@@ -57,22 +58,22 @@ function TaskList() {
 
   return (
     <div>
-      <input type="text" name="taskName" value={name} placeholder='Task Name ...' onChange={e => setName(e.target.value)} />
-      <input type="date" name="" id="" onChange={e => setDate(e.target.value)} />
+      <label>Add Task</label>
+      <input type="text" name="taskName" id="textInput" value={name} placeholder='Task Name ...' onChange={e => setName(e.target.value)} />
+      <input type="date" name="" id="time" onChange={e => setDate(e.target.value)} />
 
-      <select name="" id="" onChange={e => setStatus(e.target.value)}>
+      <select name="" id="stutus" onChange={e => setStatus(e.target.value)}>
         <option value="Not Started">Not Started</option>
         <option value="In progress">In progress</option>
         <option value="Finished">Finished</option>
       </select>
 
-      <p>{name}</p>
       <button onClick={addItem}>submit</button>
 
       <ul>
         {items.map((item) =>
           <div>
-            <li>{[item.id, item.name, item.date, item.status]}</li>
+            <li>{[<span>{item.name}</span>, <span>{item.date}</span>, <span>{item.status}</span>]}</li>
             <button onClick={() => editItem(item.id, name, date, status)}>Edit</button>
             <button onClick={() => deleteItem(item.id)}>Delete</button>
           </div>
