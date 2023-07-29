@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import GetData, { Fetch } from "./GetData";
-
+import '../App.css'
 
 function Form() {
     const local = localStorage.getItem('visit');
@@ -12,7 +12,7 @@ function Form() {
 
     
     let Fetch = () => {
-        axios.get(`http://localhost:8000/`, { params: { local } })
+        axios.get(process.env.REACT_APP_URL, { params: { local } })
             .then(res => setData(res.data))
             .catch(err => console.log(err));
     };
@@ -29,12 +29,15 @@ function Form() {
 
         local = localStorage.getItem('visit');
 
-        axios.post(`http://localhost:8000/app/item/${id}/${name}/${time}/${local}`)
+        axios.post(`${process.env.REACT_APP_CREATE}${id}/${name}/${time}/${local}`)
             .then(res => {
                 console.log('success');
                 Fetch();
             })
             .catch(err => console.log(err));
+            let i = id+1;
+            setId(i);
+            console.log(id);
     }
 
     useEffect(()=>{
@@ -43,17 +46,15 @@ function Form() {
 
 
     return(
-        <>
+        <div className="form">
             <form action="" method="post" onSubmit={handleSubmit}>
-                <input type="number" value={id} onChange={e=>setId(e.target.value)} placeholder="id"/>
-                <input type="text" value={name} onChange={e=>setName(e.target.value)} placeholder="name"/>
+                <input type="text" value={name} onChange={e=>setName(e.target.value)} placeholder="Task Name"/>
                 <input type="date" value={time} onChange={e=>setTime(e.target.value)} placeholder="time"/>
-
-                <button type="submit">submit</button>
+                <button type="operation" >submit</button>
             </form>
 
-            <GetData data={data} setData={setData}/>
-        </>
+            <GetData data={data} setData={setData} name={name} time={time}/>
+        </div>
     )
 }
 
